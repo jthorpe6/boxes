@@ -1,0 +1,111 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+  # set time zone if vagrant-timezone is installed 
+  if Vagrant.has_plugin?("vagrant-timezone")
+    config.timezone.value = "UTC"
+  end
+  # the base OS
+  config.vm.box = "fishi0x01/win-10-pro-x64"
+
+  # use winrm for provisioning
+  config.vm.communicator = "winrm"
+  
+  # set some defaults
+  config.vm.guest = :windows
+  config.vm.hostname = "winhax"
+
+  # forward RDP and WINRM ports
+  config.vm.network :forwarded_port, guest: 3389, host: 3388, id: "rdp", auto_correct: false
+  config.vm.network :forwarded_port, guest: 5985, host: 5985, id: "winrm", auto_correct: true
+  config.windows.set_work_network = true
+  config.winrm.max_tries = 20
+  
+  # install chocolatey
+  config.vm.provision "shell", inline: "Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))"
+  
+  # install microsoft apps
+  config.vm.provision "shell", inline: <<-SHELL
+  choco install vscode -y
+  choco install microsoft-windows-terminal -y
+  choco install visualstudio2019community -y
+  choco install visualstudio2019-workload-manageddesktop -y
+  choco install visualstudio2017-workload-nativedesktop -y
+  SHELL
+  
+  # reboot
+  config.vm.provision :reload
+  
+  # dotnet was being a pain
+  config.vm.provision "shell", inline: <<-SHELL
+  choco install dotnet-aspnetruntime -y
+  choco install dotnetcore-aspnetruntime -y
+  choco install dotnet3.5 -y
+  choco install dotnet-5.0-sdk -y
+  SHELL
+  
+  # reboot
+  config.vm.provision :reload
+  
+  # install tools via chocolatey
+  config.vm.provision "shell", inline: <<-SHELL
+  choco install 7zip -y
+  choco install dnspy -y
+  choco install explorersuite -y
+  choco install die -y
+  choco install git -y
+  choco install cutter -y
+  choco install ghidra -y
+  choco install x64dbg.portable -y
+  choco install firefox -y
+  choco install burp-suite-free-edition -y
+  choco install fiddler -y
+  choco install winspy -y
+  choco install sysinternals -y
+  choco install regshot -y
+  choco install processhacker -y
+  choco install linqpad -y
+  choco install vmware-powercli-psmodule -y
+  choco install az.powershell -y
+  choco install python -y
+  choco install nmap -y
+  choco install wireshark -y
+  choco install winpcap -y
+  choco install javaruntime -y
+  choco install javadecompiler-gui -y
+  choco install ojdkbuild -y
+  SHELL
+  
+  # reboot
+  config.vm.provision :reload
+  
+  # git tools 
+  config.vm.provision "shell", inline: <<-SHELL
+  New-Item -ItemType Directory -Force -Path $env:userprofile\\opt
+  git clone https://github.com/pwntester/ysoserial.net $env:userprofile\\opt\\ysoserial.net
+  git clone https://github.com/NetSPI/MicroBurst $env:userprofile\\opt\\MicroBurst
+  git clone https://github.com/dafthack/MailSniper $env:userprofile\\opt\\MailSniper
+  git clone https://github.com/S3cur3Th1sSh1t/PowerSharpPack $env:userprofile\\opt\\PowerSharpPack
+  git clone https://github.com/S3cur3Th1sSh1t/WinPwn $env:userprofile\\opt\\WinPwn
+  git clone https://github.com/antonioCoco/RemotePotato0 $env:userprofile\\opt\\RemotePotato0
+  git clone https://github.com/klezVirus/inceptor $env:userprofile\\opt\\inceptor
+  git clone https://github.com/b4rtik/SharpKatz $env:userprofile\\opt\\SharpKatz
+  git clone https://github.com/djhohnstein/SharpShares $env:userprofile\\opt\\SharpShares
+  git clone https://github.com/GhostPack/Seatbelt $env:userprofile\\opt\\Seatbelt
+  git clone https://github.com/GhostPack/Rubeus $env:userprofile\\opt\\Rubeus
+  git clone https://github.com/GhostPack/SharpUp $env:userprofile\\opt\\SharpUp
+  git clone https://github.com/GhostPack/Lockless $env:userprofile\\opt\\Lockless
+  git clone https://github.com/GhostPack/SharpDPAPI  $env:userprofile\\opt\\SharpDPAPI
+  git clone https://github.com/GhostPack/SafetyKatz $env:userprofile\\opt\\SafetyKatz
+  git clone https://github.com/Kevin-Robertson/Inveigh $env:userprofile\\opt\\Inveigh
+  git clone https://github.com/tevora-threat/SharpView $env:userprofile\\opt\\SharpView
+  git clone https://github.com/FuzzySecurity/Sharp-Suite $env:userprofile\\opt\\Sharp-Suite
+  git clone https://github.com/NetSPI/PESecurity $env:userprofile\\opt\\PESecurity
+  git clone https://github.com/mattifestation/PowerShellArsenal $env:userprofile\\opt\\PowerShellArsenal
+  SHELL
+
+  # reboot
+  config.vm.provision :reload
+  
+end
