@@ -86,8 +86,10 @@ Vagrant.configure("2") do |config|
   git clone https://github.com/pwntester/ysoserial.net $env:userprofile\\opt\\ysoserial.net
   git clone https://github.com/NetSPI/MicroBurst $env:userprofile\\opt\\MicroBurst
   git clone https://github.com/dafthack/MailSniper $env:userprofile\\opt\\MailSniper
+  git clone https://github.com/redcanaryco/AtomicTestHarnesses $env:userprofile\\opt\\AtomicTestHarnesses
   git clone https://github.com/S3cur3Th1sSh1t/PowerSharpPack $env:userprofile\\opt\\PowerSharpPack
   git clone https://github.com/S3cur3Th1sSh1t/WinPwn $env:userprofile\\opt\\WinPwn
+  git clone https://github.com/FuzzySecurity/Sharp-Suite $env:userprofile\\opt\\Sharp-Suite
   git clone https://github.com/antonioCoco/RemotePotato0 $env:userprofile\\opt\\RemotePotato0
   git clone https://github.com/klezVirus/inceptor $env:userprofile\\opt\\inceptor
   git clone https://github.com/b4rtik/SharpKatz $env:userprofile\\opt\\SharpKatz
