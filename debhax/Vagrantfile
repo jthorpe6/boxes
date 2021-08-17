@@ -1,0 +1,19 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+  # set time zone if vagrant-timezone is installed 
+  if Vagrant.has_plugin?("vagrant-timezone")
+    config.timezone.value = "UTC"
+  end
+  # base os
+  config.vm.box = "debian/buster64"
+  # install depends
+  config.vm.provision "shell", inline: "apt-get update && apt-get install -y rsync curl"
+  # set the hostname
+  config.vm.guest = :linux
+  config.vm.hostname = "debhax"
+  # provision the machine with a shell script
+  ## yeah ok I cheated, but it works right ;)
+  config.vm.provision "shell", inline: "curl -s https://gitlab.com/JxTx/config/-/raw/master/bootstrap.sh | bash"
+end
