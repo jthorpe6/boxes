@@ -25,18 +25,22 @@ Vagrant.configure("2") do |config|
     crackmapexec && \
     bloodhound && \
     covenant-kbx && \
-    powershell-empire
+    powershell-empire && \
+    starkiller
   # init msf
   msfdb init
   # install evil-winrm
   gem install evil-winrm
   # install nuclei
   GO111MODULE=on go get -v github.com/projectdiscovery/nuclei/v2/cmd/nuclei
+  # pips
+  pip3 install mitm6
   # git clone all the things 
   mkdir /home/vagrant/opt
   git clone https://github.com/michenriksen/aquatone /home/vagrant/opt/aquatone
   git clone https://github.com/DanMcInerney/xsscrapy /home/vagrant/opt/xsscrapy
   git clone https://github.com/ticarpi/jwt_tool /home/vagrant/opt/jwt_tool
+  git clone https://github.com/byt3bl33d3r/ItWasAllADream /home/vagrant/opt/ItWasAllADream
   git clone https://github.com/lgandx/Responder /home/vagrant/opt/Responder
   git clone https://github.com/byt3bl33d3r/DeathStar /home/vagrant/opt/DeathStar
 SHELL
